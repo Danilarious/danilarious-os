@@ -573,53 +573,49 @@ function AboutWindowContent() {
 function ProjectsWindowContent() {
   const projects = [
     {
-      id: "plastic-thoughts"
+      id: "plastic-thoughts",
       title: "Plastic Thoughts (placeholder)",
       description:
         "Surreal desk sculptures and characters, bold color blocks and Memphis energy.",
-      href: "#",
+      status: "OPEN",
     },
     {
-      id: "danilarious-world-1",
+      id: "danilarious-world-level-1",
       title: "Danilarious World: Level 1",
       description:
         "Intro world with core characters and interactive hero scene.",
-      href: "#",
-    },
-    {
-      id: "calendar-2026",
-      title: "Danilarious Calendar 2026",
-      description: "12-panel calendar concept with animated scenes.",
-      href: "#",
+      status: "OPEN",
     },
   ];
 
   return (
-    <div className="space-y-3 text-[12px]">
-      <h2 className="text-sm font-bold mb-1">Projects</h2>
-      <p className="mb-2">
-        Placeholder projects for now. Each of these will eventually open its own
-        window or deep-link into a gallery / case study.
+    <div className="space-y-3 text-[12px] leading-relaxed">
+      <p>
+        Placeholder projects for now. Each of these will eventually open its
+        own window or deep-link into a gallery / case study.
       </p>
-      <ul className="space-y-2">
-        {projects.map((p) => (
-          <li
-            key={p.id}
-            className="border border-black bg-white px-3 py-2 flex flex-col gap-1 hover:bg-[#fff7cc] cursor-pointer text-black"
+
+      <div className="space-y-2">
+        {projects.map((project) => (
+          <div
+            key={project.id}
+            className="border border-black/40 bg-white shadow-[4px_4px_0px_rgba(0,0,0,0.35)] flex items-start justify-between px-3 py-2"
           >
-            <div className="flex items-center justify-between">
-              <span className="font-semibold">{p.title}</span>
-              <span className="text-[10px] uppercase tracking-wide">
-                Open
-              </span>
+            <div className="pr-4">
+              <div className="font-bold mb-1">{project.title}</div>
+              <div>{project.description}</div>
             </div>
-            <p className="text-[11px]">{p.description}</p>
-          </li>
+
+            <button className="text-[11px] uppercase border border-black px-2 py-1 bg-[#F5F4EF] hover:bg-black hover:text-white transition">
+              {project.status}
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
+
 
 function SettingsWindowContent({
   backgrounds,
