@@ -4,7 +4,7 @@
 import { AboutWindowContent } from "../windows/AboutWindowContent";
 import { SettingsWindowContent } from "../windows/SettingsWindowContent";
 import { ProjectsWindowContent } from "../windows/ProjectsWindowContent";
-import { CanvasAppShell } from "../apps/CanvasApp/CanvasAppShell";
+import { CanvasApp } from "../apps/CanvasApp/CanvasApp";
 
 // Icon imports
 import aboutIcon from "../assets/icons/eye.svg";
@@ -61,7 +61,7 @@ export const APPS = {
     iconId: "canvas",
     iconSrc: canvasIcon,
     emoji: "🎨",
-    component: CanvasAppShell,
+    component: CanvasApp,
     defaultWindow: {
       x: 100,
       y: 100,
