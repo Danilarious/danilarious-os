@@ -319,8 +319,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Desktop icons – responsive: vertical on desktop, horizontal dock on mobile */}
-        <div className="absolute top-24 right-8 flex flex-col gap-8 text-xs text-black items-center md:flex-col md:top-24 md:right-8 max-md:flex-row max-md:bottom-4 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-auto max-md:right-auto max-md:gap-4">
+        {/* Desktop icons – responsive: vertical stack on desktop, iOS-style grid on mobile */}
+        <div className="absolute top-24 right-8 flex flex-col gap-8 text-xs text-black items-center md:flex-col md:top-24 md:right-8 max-md:top-20 max-md:left-0 max-md:right-0 max-md:grid max-md:grid-cols-4 max-md:gap-6 max-md:px-6">
           {DESKTOP_ICONS.map((icon) => {
             const app = APPS[icon.appId];
             return (
