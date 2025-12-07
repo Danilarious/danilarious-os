@@ -4,11 +4,13 @@
 import { AboutWindowContent } from "../windows/AboutWindowContent";
 import { SettingsWindowContent } from "../windows/SettingsWindowContent";
 import { ProjectsWindowContent } from "../windows/ProjectsWindowContent";
+import { CanvasAppShell } from "../apps/CanvasApp/CanvasAppShell";
 
 // Icon imports
 import aboutIcon from "../assets/icons/eye.svg";
 import settingsIcon from "../assets/icons/radio.svg";
 import projectsIcon from "../assets/icons/yellow.svg";
+import canvasIcon from "../assets/icons/canvas.svg";
 
 export const APPS = {
   about: {
@@ -53,21 +55,20 @@ export const APPS = {
       height: 280,
     },
   },
-  // Canvas will be added in Phase 2:
-  // canvas: {
-  //   id: "canvas",
-  //   title: "Danilarious Canvas",
-  //   iconId: "canvas",
-  //   iconSrc: canvasIcon,
-  //   emoji: "🎨",
-  //   component: CanvasAppShell,
-  //   defaultWindow: {
-  //     x: 100,
-  //     y: 100,
-  //     width: 900,
-  //     height: 700,
-  //   },
-  // },
+  canvas: {
+    id: "canvas",
+    title: "Danilarious Canvas",
+    iconId: "canvas",
+    iconSrc: canvasIcon,
+    emoji: "🎨",
+    component: CanvasAppShell,
+    defaultWindow: {
+      x: 100,
+      y: 100,
+      width: 900,
+      height: 700,
+    },
+  },
 };
 
 // Desktop icon configuration
@@ -87,5 +88,9 @@ export const DESKTOP_ICONS = [
     label: "Projects",
     appId: "projects",
   },
-  // Canvas icon will be added in Phase 2
+  {
+    id: "canvas",
+    label: "Canvas",
+    appId: "canvas",
+  },
 ];
