@@ -2,6 +2,8 @@
 
 *Last updated: December 2024*
 
+> Update (2025-12-13): See `docs/PRD-Canvas-2025-12-13.md` for the current Canvas mode architecture, fixes, and mobile stance. Note that the correct mobile layout keeps icons in an iOS-style top grid; any previous “bottom dock” mentions are outdated.
+
 ## 0. Context
 
 **Danilarious OS (BxOS)** is a retro-desktop-style web experience mimicking a 90s Mac/OS environment with draggable windows, a top bar, a live clock, and desktop icons. It is currently deployed at:
@@ -180,9 +182,9 @@ This acts as a **pseudo-database** that is:
 
 **MVP mobile behavior**
 
-**Icons dock:**
+**App Icons:**
 - Desktop: icons on the right side (current behavior).
-- Mobile: icons in a fixed bottom dock, centered horizontally (`flex` row with Tailwind responsive classes).
+- Mobile: icons centered horizontally in the style of typical iOS Mobile home
 
 **Windows:**
 - On small screens, windows should:

@@ -1,12 +1,9 @@
 // src/apps/CanvasApp/components/AssetLibrary.jsx
 import { CANVAS_ASSETS } from '../../../data/canvasAssets';
-import { useCanvasStore } from '../hooks/useCanvasStore';
 
-export function AssetLibrary() {
-  const { addElement } = useCanvasStore();
-
+export function AssetLibrary({ onAddAsset }) {
   const handleAddAsset = (asset) => {
-    addElement({
+    onAddAsset?.({
       assetId: asset.id,
       assetSrc: asset.svg,
       type: 'image',

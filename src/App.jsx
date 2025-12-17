@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 // Config & Data
 import { APPS, DESKTOP_ICONS } from "./config/apps";
+import { CanvasApp } from "./apps/CanvasApp/CanvasApp";
 
 // Components
 import { AnalogClock } from "./components/AnalogClock";
@@ -139,14 +140,16 @@ function getBackgroundStyle(bg) {
 // --- MAIN APP COMPONENT ---
 
 export default function App() {
-  // Initialize windows from APPS registry
-  const initialWindows = Object.values(APPS).map((app) => ({
-    id: app.id,
-    title: app.title,
-    ...app.defaultWindow,
-    isOpen: false,
-    zIndex: 1,
-  }));
+  // Initialize windows from APPS registry (Canvas runs as a mode, not a window)
+  const initialWindows = Object.values(APPS)
+    .filter((app) => app.id !== "canvas")
+    .map((app) => ({
+      id: app.id,
+      title: app.title,
+      ...app.defaultWindow,
+      isOpen: false,
+      zIndex: 1,
+    }));
 
   const [windows, setWindows] = useState(initialWindows);
   const [activeId, setActiveId] = useState(null);
@@ -154,6 +157,7 @@ export default function App() {
   const [filterId, setFilterId] = useState("normal");
   const [zCounter, setZCounter] = useState(10);
   const [gobyState, setGobyState] = useState("idle"); // 'idle' | 'hover' | 'click'
+  const [canvasMode, setCanvasMode] = useState(false);
 
   // Theme cycling
   const themeIds = Object.keys(WINDOW_THEMES);
@@ -180,6 +184,12 @@ export default function App() {
   );
 
   const openWindow = (id) => {
+    if (id === "canvas") {
+      setCanvasMode(true);
+      setActiveId(null);
+      return;
+    }
+
     setWindows((prev) =>
       prev.map((w) => {
         if (w.id !== id) return w;
@@ -279,6 +289,14 @@ export default function App() {
     return <Component />;
   };
 
+  const handleDesktopIconClick = (appId) => {
+    if (canvasMode && appId !== "canvas") {
+      // Keep desktop interaction paused while Canvas Mode is active
+      return;
+    }
+    openWindow(appId);
+  };
+
   return (
     <div className="w-screen h-screen overflow-hidden">
       {/* Desktop background */}
@@ -319,51 +337,62 @@ export default function App() {
           </div>
         </div>
 
-        {/* Desktop icons – responsive: vertical stack on desktop, iOS-style grid on mobile */}
-        <div className="absolute top-24 right-8 flex flex-col gap-8 text-xs text-black items-center md:flex-col md:top-24 md:right-8 max-md:top-20 max-md:left-0 max-md:right-0 max-md:grid max-md:grid-cols-4 max-md:gap-6 max-md:px-6">
-          {DESKTOP_ICONS.map((icon) => {
-            const app = APPS[icon.appId];
-            return (
-              <DesktopIcon
-                key={icon.id}
-                label={icon.label}
-                emoji={app.emoji}
-                iconSrc={app.iconSrc}
-                onClick={() => openWindow(icon.appId)}
-              />
-            );
-          })}
-        </div>
+        {!canvasMode && (
+          <>
+            {/* Desktop icons – responsive: vertical stack on desktop, iOS-style grid on mobile */}
+            <div className="absolute top-24 right-8 flex flex-col gap-8 text-xs text-black items-center md:flex-col md:top-24 md:right-8 max-md:top-20 max-md:left-0 max-md:right-0 max-md:grid max-md:grid-cols-4 max-md:gap-6 max-md:px-6">
+              {DESKTOP_ICONS.map((icon) => {
+                const app = APPS[icon.appId];
+                return (
+                  <DesktopIcon
+                    key={icon.id}
+                    label={icon.label}
+                    emoji={app.emoji}
+                    iconSrc={app.iconSrc}
+                    onClick={() => handleDesktopIconClick(icon.appId)}
+                  />
+                );
+              })}
+            </div>
 
-        {/* Windows */}
-        {windows.map((w) =>
-          !w.isOpen ? null : (
-            <motion.div
-              key={w.id}
-              drag
-              dragMomentum={false}
-              onDragEnd={(e, info) => onDragEnd(w.id, e, info)}
-              onMouseDown={() => bringToFront(w.id)}
-              className="absolute flex flex-col overflow-hidden"
-              style={{
-                width: w.width,
-                height: w.height,
-                zIndex: w.zIndex,
-                x: w.x,
-                y: w.y,
-              }}
-            >
-              <WindowChrome
-                title={w.title}
-                active={activeId === w.id}
-                onClose={() => closeWindow(w.id)}
-                theme={windowTheme}
-                onCycleTheme={cycleWindowTheme}
-              >
-                {renderWindowContent(w.id)}
-              </WindowChrome>
-            </motion.div>
-          )
+            {/* Windows */}
+            {windows.map((w) =>
+              !w.isOpen ? null : (
+                <motion.div
+                  key={w.id}
+                  drag
+                  dragMomentum={false}
+                  onDragEnd={(e, info) => onDragEnd(w.id, e, info)}
+                  onMouseDown={() => bringToFront(w.id)}
+                  className="absolute flex flex-col overflow-hidden"
+                  style={{
+                    width: w.width,
+                    height: w.height,
+                    zIndex: w.zIndex,
+                    x: w.x,
+                    y: w.y,
+                  }}
+                >
+                  <WindowChrome
+                    title={w.title}
+                    active={activeId === w.id}
+                    onClose={() => closeWindow(w.id)}
+                    theme={windowTheme}
+                    onCycleTheme={cycleWindowTheme}
+                  >
+                    {renderWindowContent(w.id)}
+                  </WindowChrome>
+                </motion.div>
+              )
+            )}
+          </>
+        )}
+
+        {/* Canvas mode overlay */}
+        {canvasMode && (
+          <div className="absolute inset-x-0 top-12 bottom-0 z-40">
+            <CanvasApp onExit={() => setCanvasMode(false)} />
+          </div>
         )}
       </div>
     </div>
